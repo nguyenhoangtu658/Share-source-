@@ -34,7 +34,7 @@ local function RunIntro()
     Subtitle.Size = UDim2.new(1,0,0.1,0)
     Subtitle.Position = UDim2.new(0,0,0.6,0)
     Subtitle.BackgroundTransparency = 1
-    Subtitle.Text = "A2"
+    Subtitle.Text = "Loading..."
     Subtitle.TextColor3 = red
     Subtitle.Font = Enum.Font.Code
     Subtitle.TextSize = 16
