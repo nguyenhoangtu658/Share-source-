@@ -921,7 +921,7 @@ spawn(function()
     local Test = Instance.new("Highlight")
     Test.Name = "highlight"
     Test.Enabled = true
-    Test.FillColor = Color3.fromRGB(255,0,0)
+    Test.FillColor = Color3.fromRGB(152, 255, 152)
     Test.OutlineColor = Color3.fromRGB(255,255,255)
     Test.FillTransparency = 0.5
     Test.OutlineTransparency = 0.2
@@ -1647,7 +1647,7 @@ QuestNeta = function()
 end
 
 
-local redzlib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Dev-NejiDepzai/Ui/refs/heads/main/RedzMod.lua"))()
+local redzlib = loadstring(game:HttpGet("https://raw.githubusercontent.com/nguyenhoangtu658/V/refs/heads/main/V8.7.2"))()
 _G.HeartBoss=_G.HeartBoss or false
 
 local function FarmBossEvent()
@@ -1716,17 +1716,17 @@ local function FarmBossEvent()
 end
 
 local Window = redzlib:MakeWindow({
-  Title = "NEJI Hub",
-  SubTitle = "Blox Fruit",
+  Title = "V.Đạt Yêu N.Huy | Blox Fruits",
+  SubTitle = "V.Đạt Chim Bé Hơn N.Huy",
   SaveFolder = "NejiHub.lua"
 })
 
 Window:AddMinimizeButton({
-    Button = { Image = "rbxassetid://123060196429580", BackgroundTransparency = 0 },
+    Button = { Image = "rbxassetid://131288136699537", BackgroundTransparency = 0 },
     Corner = { CornerRadius = UDim.new(0, 5) },
 })
 local Tabs = {
-    Info = Window:MakeTab({ Title = "Info And Status", Icon = "info" }),
+    Info = Window:MakeTab({ Title = "Trạng Thái", Icon = "info" }),
     Main = Window:MakeTab({ Title = "Farming", Icon = "home" }),
     Settings = Window:MakeTab({ Title = "Setting", Icon = "rbxassetid://7734053495" }),
     Fish = Window:MakeTab({ Title = "Fishing", Icon = "rbxassetid://127664059821666" }),
@@ -1742,19 +1742,19 @@ local Tabs = {
     Misc = Window:MakeTab({ Title = "Miscellaneous", Icon = "rbxassetid://6031280882" })
 }
 
-Tabs.Info:AddSection("Information")
+Tabs.Info:AddSection("Thông Tin")
 
     Tabs.Info:AddDiscordInvite({
-    Title = "TikTok - NEJI",
-    Description = "Flow Me!!!",
-    Logo = "rbxassetid://123060196429580",
-    Invite = "@tiktokacckhoe1",
+    Title = "TikTok",
+    Description = "Pls Follow,Tym",
+    Logo = "rbxassetid://131288136699537",
+    Invite = "@dy32nq59oghd",
 })
     Tabs.Info:AddDiscordInvite({
-    Title = "Discord - NEJI",
-    Description = "Vào Discord Để Nhận Thông Báo Cập Nhật Script!!!",
-    Logo = "rbxassetid://123060196429580",
-    Invite = "https://discord.gg/vCqfSB2tev",
+    Title = "Discord",
+    Description = "Vào Discord Để Hết Dead Chat",
+    Logo = "rbxassetid://131288136699537",
+    Invite = "https://discord.gg/Nthf5xSCS",
 })
 
 Tabs.Info:AddSection("Status Server")
@@ -6935,7 +6935,7 @@ spawn(function()
              Quest3 = false;
              Quest4 = false;
              local v = GetConnectionEnemies("Living Zombie")
-             if v then repeat task.wait() Attack.Kill(v,_G.Auto_Soul_Guitar) until not _G.Auto_Soul_Guitar or v.Humanoid.Health <= 0 or not v.Parent or workspace.Map["Haunted Castle"].SwampWater.Color ~= Color3.fromRGB(117, 0, 0)
+             if v then repeat task.wait() Attack.Kill(v,_G.Auto_Soul_Guitar) until not _G.Auto_Soul_Guitar or v.Humanoid.Health <= 0 or not v.Parent or workspace.Map["Haunted Castle"].SwampWater.Color ~= Color3.fromRGB(152, 255, 152)
              else _tp(CFrame.new(-10170.7275390625, 138.6524658203125, 5934.26513671875))
              end
            elseif replicated.Remotes.CommF_:InvokeServer("GuitarPuzzleProgress","Check").Gravestones == false then
