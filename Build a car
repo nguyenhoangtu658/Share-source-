@@ -1,0 +1,71 @@
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+if playerGui:FindFirstChild("AdvancedTeleportGui") then
+    playerGui.AdvancedTeleportGui:Destroy()
+end
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "AdvancedTeleportGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = playerGui
+
+local teleportButton = Instance.new("TextButton")
+teleportButton.Size = UDim2.new(0, 160, 0, 50)
+teleportButton.Position = UDim2.new(0.05, 0, 0.4, 0)
+teleportButton.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+teleportButton.TextColor3 = Color3.fromRGB(0, 255, 128)
+teleportButton.TextSize = 16
+teleportButton.Font = Enum.Font.SourceSansBold
+teleportButton.Text = "Farm Cash"
+teleportButton.BorderSizePixel = 2
+teleportButton.Parent = screenGui
+
+local uiCorner = Instance.new("UICorner")
+uiCorner.CornerRadius = UDim.new(0, 8)
+uiCorner.Parent = teleportButton
+
+local targetPosition = Vector3.new(183.8767547607422, -147.11618041992188, -21442.71484375)
+
+local function safeTeleport(character, rootPart)
+
+    if rootPart:IsA("BasePart") then
+        rootPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+        rootPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+    end
+    
+    local startFrame = rootPart.CFrame
+    local endFrame = CFrame.new(targetPosition)
+    local distance = (targetPosition - startFrame.Position).Magnitude
+    
+    local steps = math.ceil(distance / 50) 
+    
+    for i = 1, steps do
+        if not rootPart or not character:FindFirstChild("Humanoid") or character.Humanoid.Health <= 0 then break end
+        
+        local fraction = i / steps
+        rootPart.CFrame = startFrame:Lerp(endFrame, fraction)
+        
+        task.wait(0.01) 
+    end
+   
+    rootPart.CFrame = endFrame
+end
+
+teleportButton.MouseButton1Click:Connect(function()
+    local character = player.Character
+    if character then
+        local rootPart = character:FindFirstChild("HumanoidRootPart")
+        if rootPart then
+            teleportButton.Text = "Tween"
+            teleportButton.Active = false
+            
+            safeTeleport(character, rootPart)
+            
+            teleportButton.Text = "Farm Cash"
+            teleportButton.Active = true
+        else
+
+        end
+    end
+end)
