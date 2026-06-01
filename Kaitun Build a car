@@ -1,0 +1,231 @@
+getgenv().running = true
+local Players = game:GetService("Players")
+
+local ScreenGui = Instance.new("ScreenGui")
+local StopButton = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
+
+ScreenGui.Name = "FarmStopGui"
+ScreenGui.ResetOnSpawn = false
+
+local success = pcall(function()
+    ScreenGui.Parent = game:GetService("CoreGui")
+end)
+if not success then
+    ScreenGui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+end
+
+StopButton.Name = "StopButton"
+StopButton.Parent = ScreenGui
+StopButton.BackgroundColor3 = Color3.fromRGB(220, 50, 50)
+StopButton.Position = UDim2.new(0, 15, 0, 15)
+StopButton.Size = UDim2.new(0, 90, 0, 35)
+StopButton.Font = Enum.Font.SourceSansBold
+StopButton.Text = "STOP FARM"
+StopButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+StopButton.TextSize = 16
+
+UICorner.Parent = StopButton
+
+StopButton.MouseButton1Click:Connect(function()
+    getgenv().running = false
+    ScreenGui:Destroy()
+end)
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local __things = workspace:WaitForChild("__THINGS")
+local __remotes = __things:WaitForChild("__REMOTES")
+local vehicle_spawn = __remotes:WaitForChild("vehicle_spawn")
+local vehicle_stop = __remotes:WaitForChild("vehicle_stop")
+
+local zone1_p1 = Vector3.new(398.0437316894531, 41.27346420288086, -23.875207901000977)
+local zone1_p2 = Vector3.new(-122.26522827148438, -173.7581024169922, 65.41757202148438)
+local z1_minX, z1_maxX = math.min(zone1_p1.X, zone1_p2.X), math.max(zone1_p1.X, zone1_p2.X)
+local z1_minY, z1_maxY = math.min(zone1_p1.Y, zone1_p2.Y), math.max(zone1_p1.Y, zone1_p2.Y)
+local z1_minZ, z1_maxZ = math.min(zone1_p1.Z, zone1_p2.Z), math.max(zone1_p1.Z, zone1_p2.Z)
+
+local zone2_p1 = Vector3.new(397.0307312011719, 0.4685051143169403, -34.52622985839844)
+local zone2_p2 = Vector3.new(-70.82369995117188, 94.1646957397461, -231.20980834960938)
+local z2_minX, z2_maxX = math.min(zone2_p1.X, zone2_p2.X), math.max(zone2_p1.X, zone2_p2.X)
+local z2_minY, z2_maxY = math.min(zone2_p1.Y, zone2_p2.Y), math.max(zone2_p1.Y, zone2_p2.Y)
+local z2_minZ, z2_maxZ = math.min(zone2_p1.Z, zone2_p2.Z), math.max(zone2_p1.Z, zone2_p2.Z)
+
+local function isInZone1()
+    local char = Players.LocalPlayer.Character
+    local root = char and char:FindFirstChild("HumanoidRootPart")
+    if root then
+        local p = root.Position
+        return (p.X >= z1_minX and p.X <= z1_maxX) and (p.Y >= z1_minY and p.Y <= z1_maxY) and (p.Z >= z1_minZ and p.Z <= z1_maxZ)
+    end
+    return false
+end
+
+local function isInZone2()
+    local char = Players.LocalPlayer.Character
+    local root = char and char:FindFirstChild("HumanoidRootPart")
+    if root then
+        local p = root.Position
+        return (p.X >= z2_minX and p.X <= z2_maxX) and (p.Y >= z2_minY and p.Y <= z2_maxY) and (p.Z >= z2_minZ and p.Z <= z2_maxZ)
+    end
+    return false
+end
+
+local function waitToTeleport()
+    while isInZone1() do
+        task.wait()
+        if isInZone2() then return end
+    end
+    local timeLeft = 0.5 
+    while timeLeft > 0 do
+        task.wait(0.05)
+        timeLeft = timeLeft - 0.05
+        if isInZone2() then break end
+    end
+end
+
+task.spawn(function()
+    while getgenv().running do
+        
+        if not getgenv().running then break end
+        local oldChar = Players.LocalPlayer.Character
+        local _v1 = vehicle_spawn:InvokeServer(vehicle_spawn)
+        waitToTeleport() 
+        local char = Players.LocalPlayer.Character
+        local hrp = char and char:FindFirstChild("HumanoidRootPart")
+        local hum = char and char:FindFirstChildOfClass("Humanoid")
+        if hrp and getgenv().running then hrp.CFrame = CFrame.new(9000000000000000000, 90000000000000000000, 9000000000000000000) end
+        task.wait(0.25)
+        if hum then hum.Health = 0 end 
+        local _v2 = vehicle_stop:InvokeServer(vehicle_stop) 
+        repeat task.wait(0.1) until Players.LocalPlayer.Character ~= oldChar and Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        task.wait(0.5)
+
+        if not getgenv().running then break end
+        oldChar = Players.LocalPlayer.Character
+        local _v3 = vehicle_spawn:InvokeServer(vehicle_spawn)
+        waitToTeleport()
+        char = Players.LocalPlayer.Character
+        hrp = char and char:FindFirstChild("HumanoidRootPart")
+        hum = char and char:FindFirstChildOfClass("Humanoid")
+        if hrp and getgenv().running then hrp.CFrame = CFrame.new(9000000000000000000, 90000000000000000000, 9000000000000000000) end
+        task.wait(0.25)
+        if hum then hum.Health = 0 end
+        local _v4 = vehicle_stop:InvokeServer(vehicle_stop)
+        repeat task.wait(0.1) until Players.LocalPlayer.Character ~= oldChar and Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        task.wait(0.5)
+
+        if not getgenv().running then break end
+        oldChar = Players.LocalPlayer.Character
+        local _v5 = vehicle_spawn:InvokeServer(vehicle_spawn)
+        waitToTeleport()
+        char = Players.LocalPlayer.Character
+        hrp = char and char:FindFirstChild("HumanoidRootPart")
+        hum = char and char:FindFirstChildOfClass("Humanoid")
+        if hrp and getgenv().running then hrp.CFrame = CFrame.new(9000000000000000000, 90000000000000000000, 9000000000000000000) end
+        task.wait(0.25)
+        if hum then hum.Health = 0 end
+        local _v6 = vehicle_stop:InvokeServer(vehicle_stop)
+        repeat task.wait(0.1) until Players.LocalPlayer.Character ~= oldChar and Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        task.wait(0.5)
+
+        if not getgenv().running then break end
+        oldChar = Players.LocalPlayer.Character
+        local _v7 = vehicle_spawn:InvokeServer(vehicle_spawn)
+        waitToTeleport()
+        char = Players.LocalPlayer.Character
+        hrp = char and char:FindFirstChild("HumanoidRootPart")
+        hum = char and char:FindFirstChildOfClass("Humanoid")
+        if hrp and getgenv().running then hrp.CFrame = CFrame.new(9000000000000000000, 90000000000000000000, 9000000000000000000) end
+        task.wait(0.25)
+        if hum then hum.Health = 0 end
+        local _v8 = vehicle_stop:InvokeServer(vehicle_stop)
+        repeat task.wait(0.1) until Players.LocalPlayer.Character ~= oldChar and Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        task.wait(0.5)
+
+        if not getgenv().running then break end
+        oldChar = Players.LocalPlayer.Character
+        local _v9 = vehicle_spawn:InvokeServer(vehicle_spawn)
+        waitToTeleport()
+        char = Players.LocalPlayer.Character
+        hrp = char and char:FindFirstChild("HumanoidRootPart")
+        hum = char and char:FindFirstChildOfClass("Humanoid")
+        if hrp and getgenv().running then hrp.CFrame = CFrame.new(9000000000000000000, 90000000000000000000, 9000000000000000000) end
+        task.wait(0.25)
+        if hum then hum.Health = 0 end
+        local _v10 = vehicle_stop:InvokeServer(vehicle_stop)
+        repeat task.wait(0.1) until Players.LocalPlayer.Character ~= oldChar and Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        task.wait(0.5)
+
+        if not getgenv().running then break end
+        oldChar = Players.LocalPlayer.Character
+        local _v11 = vehicle_spawn:InvokeServer(vehicle_spawn)
+        waitToTeleport()
+        char = Players.LocalPlayer.Character
+        hrp = char and char:FindFirstChild("HumanoidRootPart")
+        hum = char and char:FindFirstChildOfClass("Humanoid")
+        if hrp and getgenv().running then hrp.CFrame = CFrame.new(9000000000000000000, 90000000000000000000, 9000000000000000000) end
+        task.wait(0.25)
+        if hum then hum.Health = 0 end
+        local _v12 = vehicle_stop:InvokeServer(vehicle_stop)
+        repeat task.wait(0.1) until Players.LocalPlayer.Character ~= oldChar and Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        task.wait(0.5)
+
+        if not getgenv().running then break end
+        oldChar = Players.LocalPlayer.Character
+        local _v13 = vehicle_spawn:InvokeServer(vehicle_spawn)
+        waitToTeleport()
+        char = Players.LocalPlayer.Character
+        hrp = char and char:FindFirstChild("HumanoidRootPart")
+        hum = char and char:FindFirstChildOfClass("Humanoid")
+        if hrp and getgenv().running then hrp.CFrame = CFrame.new(9000000000000000000, 90000000000000000000, 9000000000000000000) end
+        task.wait(0.25)
+        if hum then hum.Health = 0 end
+        local _v14 = vehicle_stop:InvokeServer(vehicle_stop)
+        repeat task.wait(0.1) until Players.LocalPlayer.Character ~= oldChar and Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        task.wait(0.5)
+
+        if not getgenv().running then break end
+        oldChar = Players.LocalPlayer.Character
+        local _v15 = vehicle_spawn:InvokeServer(vehicle_spawn)
+        waitToTeleport()
+        char = Players.LocalPlayer.Character
+        hrp = char and char:FindFirstChild("HumanoidRootPart")
+        hum = char and char:FindFirstChildOfClass("Humanoid")
+        if hrp and getgenv().running then hrp.CFrame = CFrame.new(9000000000000000000, 90000000000000000000, 9000000000000000000) end
+        task.wait(0.25)
+        if hum then hum.Health = 0 end
+        local _v16 = vehicle_stop:InvokeServer(vehicle_stop)
+        repeat task.wait(0.1) until Players.LocalPlayer.Character ~= oldChar and Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        task.wait(0.5)
+
+        if not getgenv().running then break end
+        oldChar = Players.LocalPlayer.Character
+        local _v17 = vehicle_spawn:InvokeServer(vehicle_spawn)
+        waitToTeleport()
+        char = Players.LocalPlayer.Character
+        hrp = char and char:FindFirstChild("HumanoidRootPart")
+        hum = char and char:FindFirstChildOfClass("Humanoid")
+        if hrp and getgenv().running then hrp.CFrame = CFrame.new(9000000000000000000, 90000000000000000000, 9000000000000000000) end
+        task.wait(0.25)
+        if hum then hum.Health = 0 end
+        local _v18 = vehicle_stop:InvokeServer(vehicle_stop)
+        repeat task.wait(0.1) until Players.LocalPlayer.Character ~= oldChar and Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        task.wait(0.5)
+
+        if not getgenv().running then break end
+        oldChar = Players.LocalPlayer.Character
+        local _v19 = vehicle_spawn:InvokeServer(vehicle_spawn)
+        waitToTeleport()
+        char = Players.LocalPlayer.Character
+        hrp = char and char:FindFirstChild("HumanoidRootPart")
+        hum = char and char:FindFirstChildOfClass("Humanoid")
+        if hrp and getgenv().running then hrp.CFrame = CFrame.new(9000000000000000000, 90000000000000000000, 9000000000000000000) end
+        task.wait(0.25)
+        if hum then hum.Health = 0 end
+        local _v20 = vehicle_stop:InvokeServer(vehicle_stop)
+        repeat task.wait(0.1) until Players.LocalPlayer.Character ~= oldChar and Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        task.wait(0.5)
+
+        task.wait(0.1)
+    end
+end)
